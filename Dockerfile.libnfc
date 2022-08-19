@@ -1,0 +1,17 @@
+# build docker image:
+#   docker build -t mylibnfc -f Dockerfile.libnfc .
+# run docker container
+#   docker run --privileged -it --name mynfc mylibnfc /bin/sh
+#   docker exec -it mynfc /bin/sh
+#--------------------------------------------------------------------- 
+FROM alpine:3.16
+RUN apk add build-base autoconf automake libtool libusb-compat-dev git
+RUN autoconf --version
+RUN git clone https://github.com/nfc-tools/libnfc.git
+WORKDIR libnfc
+RUN autoreconf -vis
+RUN ./configure
+RUN make
+#RUN LIBNFC_LOG_LEVEL=3 utils/nfc-list -v
+#RUN LIBNFC_INTRUSIVE_SCAN=true examples/nfc-emulate-forum-tag2
+ENTRYPOINT ["sh","-c", "LIBNFC_INTRUSIVE_SCAN=true utils/nfc-list -v; /bin/sh"]
