@@ -1,7 +1,7 @@
 # build docker image:
 #   docker build -t mylibnfc -f Dockerfile.libnfc .
 # run docker container
-#   docker run --privileged -it --name mynfc mylibnfc /bin/sh
+#   docker run --privileged -v /dev/bus:/dev/bus -it --name mynfc mylibnfc /bin/sh
 #   docker exec -it mynfc /bin/sh
 #--------------------------------------------------------------------- 
 FROM alpine:3.16
