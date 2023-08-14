@@ -1,0 +1,19 @@
+# ------------
+# Dockerfile.uf2.bluepill
+# docker file for 
+# ----------------------------------------------------------------------------
+# build docker image
+#  docker build -t stm32uf2 -f Dockerfile.uf2.bluepill .
+# run container build
+#  docker run -it --name stm32uf2 stm32uf2 /bin/sh
+# copy build folder to host
+#  docker cp stm32uf2:/home/uf2-stm32f103/src/build/BLUEPILL .
+# does not work with ubuntu:22.04 due to "Unterminated quoted string" in Makefile ???
+FROM ubuntu:20.04
+RUN apt update && apt install -y build-essential git gcc-arm-none-eabi python2
+#python2 default
+RUN ln -sf /usr/bin/python2.7 /usr/bin/python
+WORKDIR /home/
+RUN git clone --recurse-submodules https://github.com/mmoskal/uf2-stm32f103.git
+WORKDIR /home/uf2-stm32f103/src/
+RUN make V=1 TARGET=BLUEPILL
