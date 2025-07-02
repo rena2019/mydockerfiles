@@ -1,0 +1,10 @@
+#@WSL
+# 1. change dir:        cd /mnt/c/_projects/
+# 2. build Image:       sudo docker build -t latexpdf -f Dockerfile.latexpdf .
+# 3. run make:          sudo docker run --rm  --mount type=bind,source="$(pwd)",target=/app latexpdf
+# 3b) or interactive:   sudo docker run --rm -it --mount type=bind,source="$(pwd)",target=/app latexpdf bash
+FROM ubuntu:22.04
+RUN apt-get update && DEBIAN_FRONTEND="noninteractive" TZ="Europe/Berlin" apt-get install -y tzdata
+RUN apt-get install build-essential texlive-latex-base texlive-latex-extra texlive-lang-german texlive-science -y
+WORKDIR /app
+CMD ["make"]
